@@ -1,0 +1,91 @@
+@font-face {
+  font-family: "title";
+  src: url("../assets/funkymuskrat.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "vinyl";
+  src: url("../assets/VINYL.TTF") format("truetype");
+}
+
+@font-face {
+  font-family: "bebas";
+  src: url("../assets/BebasNeue-Regular.ttf") format("truetype");
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #b4dde1;
+  color: #fff;
+  padding: 1rem;
+}
+
+.navbar-left .logo {
+  font-size: 2.5rem;
+  font-family: "vinyl";
+  letter-spacing: 0.2rem;
+  font-weight: bold;
+  color: #092f33;
+  text-decoration: none;
+  width: 60px;
+  padding: none;
+  border: none;
+  margin: none;
+}
+
+.navbar-left .logo img {
+  width: 45px;
+  border: none;
+  margin-right: 0.5rem;
+}
+
+.navbar-center .nav-links {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-center .nav-links li {
+  margin-right: 1rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.navbar-center .nav-links a {
+  color: #1b1b1b;
+  font-family: "vinyl";
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.7rem;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-right .cart-icon,
+.navbar-right .user-icon {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 1rem;
+  position: relative;
+}
+
+.navbar-right .user-icon img {
+  width: 2rem;
+}
+
+.navbar-right .cart-count {
+  background-color: #f44336;
+  color: #fff;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8rem;
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+}

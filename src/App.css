@@ -1,0 +1,46 @@
+@font-face {
+  font-family: "title";
+  src: url("funkymuskrat.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "vinyl";
+  src: url("VINYL.TTF") format("truetype");
+}
+
+@font-face {
+  font-family: "bebas";
+  src: url("BebasNeue-Regular.ttf") format("truetype");
+}
+
+.page {
+  border: none;
+  margin: none;
+  padding: none;
+}
+
+.page img {
+  border: none;
+  margin: none;
+  padding: none;
+}
+
+.pageContent {
+  padding-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-direction: column;
+}
+
+.pageContent h1 {
+  font-family: bebas;
+}
+
+body {
+  border: 0px;
+  margin: 0px;
+  padding: 0px;
+  background-color: #222222;
+}

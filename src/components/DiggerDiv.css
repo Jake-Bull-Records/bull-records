@@ -1,0 +1,65 @@
+.diggerDiv {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  position: relative;
+  min-height: 500px; /* Ensure enough space for cascaded LPs */
+  padding: 20px; /* Add padding to contain LPs */
+}
+
+.LP {
+  width: 400px;
+  height: 400px;
+  perspective: 2000px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+}
+
+.LP-cover {
+  /*Working*/
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.LP-image {
+  /*Working*/
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.LP.flipped .LP-cover {
+  /*Working*/
+  transform: rotateY(180deg);
+}
+
+.LP-front,
+.LP-back {
+  /*Working*/
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+}
+
+.LP-front {
+  /*Working*/
+  z-index: 2;
+}
+
+.LP-back {
+  /*Working*/
+  transform: rotateY(180deg);
+}
