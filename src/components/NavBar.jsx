@@ -27,7 +27,7 @@ return(
             </ul>
           </div>
           <div className='navbar-right'>
-            <a href='/account' className='user-icon'>
+            <a href='../pages/signup' className='user-icon'>
               <img src='/profile-user-account.svg'></img> 
             </a>
           </div>
