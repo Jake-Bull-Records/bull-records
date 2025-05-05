@@ -1,4 +1,4 @@
-import '../App.css'
+import '../app.css'
 
 import DiggerDiv from '../components/DiggerDiv.jsx'
 
