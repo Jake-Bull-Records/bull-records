@@ -1,6 +1,6 @@
 import './profile.css';
 import '../App.css';
-import {signUp} from './profile'
+import {signUp} from './profile.js'
 import { useState, useEffect } from 'react'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'

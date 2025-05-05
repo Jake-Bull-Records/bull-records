@@ -1,11 +1,11 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import Home from './pages/Home';
-import CrateDigger from './pages/CrateDigger';
-import PageNotFound from './pages/PageNotFound';
-import NavBar from './components/NavBar';
-import Footer from './components/Footer';
-import Profile from './pages/Profile';
+import Home from './pages/Home.jsx';
+import CrateDigger from './pages/CrateDigger.jsx';
+import PageNotFound from './pages/PageNotFound.jsx';
+import NavBar from './components/NavBar.jsx';
+import Footer from './components/Footer.jsx';
+import Profile from './pages/Profile.jsx';
 
 function App() {
   return (
