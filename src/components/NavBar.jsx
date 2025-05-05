@@ -27,9 +27,9 @@ return(
             </ul>
           </div>
           <div className='navbar-right'>
-            <a href='../pages/signup' className='user-icon'>
+            <NavLink to='/Profile' className='user-icon'>
               <img src='/profile-user-account.svg'></img> 
-            </a>
+            </NavLink>
           </div>
         </nav>
 );
