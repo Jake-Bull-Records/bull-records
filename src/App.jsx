@@ -1,5 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import './App.css';
+import './app.css';
 import Home from './pages/Home.jsx';
 import CrateDigger from './pages/CrateDigger.jsx';
 import PageNotFound from './pages/PageNotFound.jsx';
