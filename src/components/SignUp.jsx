@@ -1,5 +1,5 @@
-import './Profile.css';
-import '../app.css';
+import './profile.css';
+import '../App.css';
 import {signUp} from './profile'
 import { useState, useEffect } from 'react'
 import { Auth } from '@supabase/auth-ui-react'

@@ -1,6 +1,6 @@
-import "./DiggerDiv.js";
-import "./DiggerDiv.css";
-import { addLP } from "./DiggerDiv.js";
+import "./diggerDiv.js";
+import "./digger-div.css";
+import { addLP } from "./diggerDiv.js";
 
 function DiggerDiv() {
   return (
