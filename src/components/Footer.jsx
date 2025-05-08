@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import logo from "../assets/Transparent_Circle_BullTitle.png";
 import './footer.css';
 
 function Footer(){
@@ -9,7 +10,7 @@ function Footer(){
             <div className="footer-logo">
               <Link to="/">
                 <img
-                  src="src/assets/Transparent_Circle_BullTitle.png"
+                  src={logo}
                   alt="Record Store Logo"
                   className="logo-image"
                 />

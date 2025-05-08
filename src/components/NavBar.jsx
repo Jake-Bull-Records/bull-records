@@ -1,12 +1,13 @@
 import {NavLink} from "react-router-dom";
+import logo from '../assets/logo.jpg';
 import './nav-bar.css'
 
-function NavBar(){
+function NavBar({session}){
 return(
     <nav className='navbar'>
           <div className='navbar-left'>
             <NavLink to='/' className='logo'>
-                <img src='src/assets/logo.jpg'></img> 
+                <img src={logo}></img> 
                 Bull Records
             </NavLink>
           </div>
@@ -30,6 +31,9 @@ return(
             <NavLink to='/Profile' className='user-icon'>
               <img src='/profile-user-account.svg'></img> 
             </NavLink>
+            {session && (
+          <button onClick={async () => await supabase.auth.signOut()}>Sign Out</button>
+        )}
           </div>
         </nav>
 );

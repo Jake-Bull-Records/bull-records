@@ -1,10 +1,10 @@
 .footer {
-  background-color: #1a1a1a; /* Dark gray for dark mode */
-  color: #e0e0e0; /* Light gray text for contrast */
+  background-color: #1a1a1a;
+  color: #e0e0e0;
   padding: 2rem 1rem;
   margin-top: 2rem;
   width: 100%;
-  border-top: 1px solid #333; /* Subtle border for separation */
+  border-top: 1px solid #333; /* border for separation */
 }
 
 .footer-container {

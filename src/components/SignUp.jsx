@@ -1,47 +1,30 @@
 import './profile.css';
 import '../app.css';
-import {signUp} from './profile.js'
 import { useState, useEffect } from 'react'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import {supabase} from '../supabaseClient'
+import {NavLink} from "react-router-dom";
 
-function SignUp(){
-    const [session, setSession] = useState(null)
-    useEffect(() => {
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        setSession(session)
-      })
-      const {
-        data: { subscription },
-      } = supabase.auth.onAuthStateChange((_event, session) => {
-        setSession(session)
-      })
-      return () => subscription.unsubscribe()
-    }, [])
-    if (!session) {
-      return (<Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }}/>)
-    }
-    else {
-      return (<div>Logged in!</div>)
-    }
-// return(
-//     <div className='pageContent'>
-//         <h1>Sign Up</h1>
-//         <form>
-//             <label htmlFor='username'>Username: </label>
-//             <input type='text' id='username' required></input>
-//             <br/>
-//             <label htmlFor='email'>Email: </label>
-//             <input type='text' id='email' required></input>
-//             <br/>
-//             <label htmlFor='password'>Password: </label>
-//             <input type='text' id='password' required></input>
-//             <br/>
-//             <input type='submit' value='Sign Up'></input>
-//         </form>
-//     </div>
-// );
+function SignUp({session}){
+  if (!session.session) {
+    return <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />;
+  }
+
+  const handleSignOut = async () => {
+      await supabase.auth.signOut();
+  };
+
+  return (
+    <div className="pageContent">
+      <h1>You're logged in right now brother</h1>
+      <p>Email: {session.session.user.email}</p> 
+          <NavLink to='/MyStore'>
+              <button className='NavLinkButton'>My Store</button>
+            </NavLink>
+      <button onClick={handleSignOut}>Log Out</button>
+    </div>
+  );
 }
 
 export default SignUp

@@ -13,6 +13,11 @@
   src: url("../assets/BebasNeue-Regular.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "songbird";
+  src: url("../assets/TANSONGBIRD.ttf") format("truetype");
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -23,9 +28,9 @@
 }
 
 .navbar-left .logo {
-  font-size: 2.5rem;
-  font-family: "vinyl";
-  letter-spacing: 0.2rem;
+  font-size: 1.5rem;
+  font-family: "songbird";
+  letter-spacing: 0rem;
   font-weight: bold;
   color: #092f33;
   text-decoration: none;
