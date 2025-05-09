@@ -1,16 +1,16 @@
 @font-face {
   font-family: "title";
-  src: url("funkymuskrat.ttf") format("truetype");
+  src: url("../src/assets/funkymuskrat.ttf") format("truetype");
 }
 
 @font-face {
   font-family: "vinyl";
-  src: url("VINYL.TTF") format("truetype");
+  src: url("../src/assets/VINYL.TTF") format("truetype");
 }
 
 @font-face {
   font-family: "bebas";
-  src: url("BebasNeue-Regular.ttf") format("truetype");
+  src: url("../src/assets/BebasNeue-Regular.ttf") format("truetype");
 }
 
 .page {

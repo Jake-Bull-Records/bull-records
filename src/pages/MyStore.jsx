@@ -2,6 +2,7 @@ import "../app.css";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { supabase } from "../supabaseClient";
+import dollarsToCents from "dollars-to-cents";
 
 function myStore(session) {
   const [images, setImages] = useState([]); //creates images (array since we have multiple files) and a variable that allows you to change images. Initialized as empty. State is used to manage dynamic data
@@ -19,11 +20,13 @@ function myStore(session) {
     //THIS IS THE EVENT HANDLER THAT INPUTS A RECORD INTO THE MEDIA TABLE. PROBABLY GOTTA MAKE THIS A FUNCTION AT SOME POINT
     event.preventDefault();
     setLoading(true);
+    console.log("Submission begins now");
+    console.log(supabase.auth.getUser());
 
     //Obtains user/machine input
     try {
       const sellerUID = session.session.id;
-      const formData = new FormData([event.target]); //gets the form from event.target and puts it into a FormData object
+      const formData = new FormData(event.target); //gets the form from event.target and puts it into a FormData object
       const mediaData = {
         //Includes everything for a media object besides the images (media table)
         price: dollarsToCents(formData.get("price")),
@@ -41,14 +44,15 @@ function myStore(session) {
         sellerID: session.session.id, //Important, puts the media on your seller ID
         shape: "Standard", //This is changeable in the future, static for now
       };
+      console.log(`Media Data: ${mediaData}`);
 
       //Call the musicBrainz API and drop the JSON in the releaseInfo
 
-      const query = `artist:"${data.artist}" release:"${data.releaseName}"`;
+      const query = `artist:"${mediaData.artist}" release:"${mediaData.releaseName}"`;
       const fmt = "json";
       const limit = "10";
-      const releaseID = null;
       const inc = "artist-credits+labels+recordings";
+      var releaseID = null;
 
       //gets initial release query based on artist and releaseName (More in depth is possible once automation takes hold)
       fetch(
@@ -63,12 +67,13 @@ function myStore(session) {
       )
         .then((response) => response.json())
         .then((responseJSON) => {
-          if (responseJSON.count != 0) {
+          if (responseJSON.count > 0) {
             releaseID = responseJSON.releases[0].id; //Takes the first fitting release and puts the ID into the releaseID const
           }
         });
 
       if (releaseID) {
+        await sleep(1000);
         fetch(
           `http://musicbrainz.org/ws/2/release/${releaseID}?inc=${inc}&fmt=${fmt}`,
           {
@@ -86,33 +91,37 @@ function myStore(session) {
       // THIS ONE IS FOR THE BOYS WITH THE BOOMIN SYSTEM (Supabase call to add the media object to the media table)
       const { createdMedia, error } = await supabase //calls supabase, returns the media object so I can yoink the ID to put in the images table
         .from("media")
-        .insert(mediaData)
+        .insert([mediaData])
         .select();
 
       const mediaID = createdMedia.mediaID;
       console.log(`Media ID: ${mediaID} created for User: ${sellerUID}`);
 
       //ADD THE IMAGES TO THE SUPABASE STORAGE
-      for (i = 0; i < images.length(); i++) {
+      for (let i = 0; i < images.length; i++) {
         //Adds the actual file to Supabase storage under my record store folder, which is hard coded
-        const { storageData, storageError } = await supabase.storage
+        const { error: storageError } = await supabase.storage
           .from("media-images")
           .upload(`media-images/bull-records/${mediaID}&${i}.jpg`, images[i], {
             cacheControl: "3600", // Cache for 1 hour
             upsert: true, // Overwrite if file exists
           });
 
-        const { tableData, tableError } = await supabase
+        //STORE THE LINKS WITH THE MEDIA ID IN THE MEDIA IMAGES TABLE
+        const { error: tableError } = await supabase
           .from("mediaImages")
-          .insert();
+          .insert({
+            mediaID: mediaID,
+            imageURL: `media-images/bull-records/${mediaID}&${i}.jpg`,
+            index: i,
+          });
       }
-
-      //STORE THE LINKS WITH THE MEDIA ID IN THE MEDIA IMAGES TABLE
 
       event.target.reset(); // Reset form on success
       setImages([]);
       alert("Record uploaded successfully!");
     } catch (err) {
+      console.error("Submission error:", err);
       setError(
         err.message || "Sorry brother but that upload didn't go very swimmingly"
       );
@@ -127,7 +136,7 @@ function myStore(session) {
       <h3>Signed in as {session?.session?.user?.email} </h3>
       <h3>
         FYI, if you're not Jake you're not gonna be able to do this. Real ones
-        only. Word to your mother.{" "}
+        only. Word to your mother.
       </h3>
       <form onSubmit={handleSubmit}>
         <label htmlFor="images">Images: </label>
