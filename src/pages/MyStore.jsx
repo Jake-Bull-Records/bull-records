@@ -44,7 +44,7 @@ function myStore(session) {
         sellerID: session.session.id, //Important, puts the media on your seller ID
         shape: "Standard", //This is changeable in the future, static for now
       };
-      console.log(`Media Data: ${mediaData}`);
+      //console.log(`Media Data before API: ${JSON.stringify(mediaData)}`);
 
       //Call the musicBrainz API and drop the JSON in the releaseInfo
 
@@ -55,7 +55,7 @@ function myStore(session) {
       var releaseID = null;
 
       //gets initial release query based on artist and releaseName (More in depth is possible once automation takes hold)
-      fetch(
+      await fetch(
         `https://musicbrainz.org/ws/2/release?query=${encodeURIComponent(
           query
         )}&fmt=${fmt}&limit=${limit}`,
@@ -70,11 +70,12 @@ function myStore(session) {
           if (responseJSON.count > 0) {
             releaseID = responseJSON.releases[0].id; //Takes the first fitting release and puts the ID into the releaseID const
           }
+          //console.log("Here is the API Response", JSON.stringify(responseJSON));
         });
 
       if (releaseID) {
-        await sleep(1000);
-        fetch(
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        await fetch(
           `http://musicbrainz.org/ws/2/release/${releaseID}?inc=${inc}&fmt=${fmt}`,
           {
             headers: {
@@ -88,14 +89,16 @@ function myStore(session) {
           });
       }
 
+//console.log(`Media Data after API call: ${JSON.stringify(mediaData)}`);
+
       // THIS ONE IS FOR THE BOYS WITH THE BOOMIN SYSTEM (Supabase call to add the media object to the media table)
-      const { createdMedia, error } = await supabase //calls supabase, returns the media object so I can yoink the ID to put in the images table
+      const { data: createdMedia, error } = await supabase //calls supabase, returns the media object so I can yoink the ID to put in the images table
         .from("media")
         .insert([mediaData])
-        .select();
+        .select('mediaID');
 
-      const mediaID = createdMedia.mediaID;
-      console.log(`Media ID: ${mediaID} created for User: ${sellerUID}`);
+        //console.log(createdMedia);
+      console.log(`Media ID: ${JSON.stringify(createdMedia)} created`);
 
       //ADD THE IMAGES TO THE SUPABASE STORAGE
       for (let i = 0; i < images.length; i++) {
