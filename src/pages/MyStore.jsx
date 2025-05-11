@@ -5,15 +5,17 @@ import { supabase } from "../supabaseClient";
 import dollarsToCents from "dollars-to-cents";
 
 function myStore(session) {
-  const [images, setImages] = useState([]); //creates images (array since we have multiple files) and a variable that allows you to change images. Initialized as empty. State is used to manage dynamic data
+  const [imageURLs, setImageURLs] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]); //creates images (array since we have multiple files) and a variable that allows you to change images. Initialized as empty. State is used to manage dynamic data
   const [error, setError] = useState(null); // For error handling
   const [loading, setLoading] = useState(false); // For loading state
 
   const previewImages = (event) => {
     //Function that handles the onChange for images
-    const files = Array.from(event.target.files || []); //Retrieves list of files from the event object and makes an array of them. Array.from() creates an array of the File objects
-    const imageUrls = files.map((file) => URL.createObjectURL(file)); //files.map() iterates over the File array, turns each file into a URL that can be used as img sources
-    setImages(imageUrls); //Sets the images object to an array of usable image URLs
+    const selectedFiles = Array.from(event.target.files || []);
+    const urls = selectedFiles.map((file) => URL.createObjectURL(file));
+    setImageFiles(selectedFiles); // Store File objects
+    setImageURLs(urls); //Sets the images object to an array of usable image URLs
   };
 
   const handleSubmit = async (event) => {
@@ -21,7 +23,7 @@ function myStore(session) {
     event.preventDefault();
     setLoading(true);
     console.log("Submission begins now");
-    console.log(supabase.auth.getUser());
+    //console.log(supabase.auth.getUser());
 
     //Obtains user/machine input
     try {
@@ -89,39 +91,51 @@ function myStore(session) {
           });
       }
 
-//console.log(`Media Data after API call: ${JSON.stringify(mediaData)}`);
+      //console.log(`Media Data after API call: ${JSON.stringify(mediaData)}`);
 
       // THIS ONE IS FOR THE BOYS WITH THE BOOMIN SYSTEM (Supabase call to add the media object to the media table)
       const { data: createdMedia, error } = await supabase //calls supabase, returns the media object so I can yoink the ID to put in the images table
         .from("media")
         .insert([mediaData])
-        .select('mediaID');
+        .select("mediaID");
 
-        //console.log(createdMedia);
-      console.log(`Media ID: ${JSON.stringify(createdMedia)} created`);
+      const mediaID = createdMedia[0].mediaID;
+
+      //console.log(createdMedia);
+      console.log(`Media ID: ${mediaID} created`);
 
       //ADD THE IMAGES TO THE SUPABASE STORAGE
-      for (let i = 0; i < images.length; i++) {
+      for (let i = 0; i < imageFiles.length; i++) {
         //Adds the actual file to Supabase storage under my record store folder, which is hard coded
+        console.log("Attempting to add images to storage");
         const { error: storageError } = await supabase.storage
           .from("media-images")
-          .upload(`media-images/bull-records/${mediaID}&${i}.jpg`, images[i], {
+          .upload(`bull-records/${mediaID}_${i}.jpg`, imageFiles[i], {
             cacheControl: "3600", // Cache for 1 hour
             upsert: true, // Overwrite if file exists
           });
-
-        //STORE THE LINKS WITH THE MEDIA ID IN THE MEDIA IMAGES TABLE
-        const { error: tableError } = await supabase
-          .from("mediaImages")
-          .insert({
-            mediaID: mediaID,
-            imageURL: `media-images/bull-records/${mediaID}&${i}.jpg`,
-            index: i,
-          });
+        if (storageError) {
+          console.log("Something went wrong with the upload, ", storageError);
+        } else {
+          //STORE THE LINKS WITH THE MEDIA ID IN THE MEDIA IMAGES TABLE
+          const { error: tableError } = await supabase
+            .from("mediaImages")
+            .insert({
+              mediaID: mediaID,
+              imageURL: `media-images/bull-records/${mediaID}&${i}.jpg`,
+              index: i,
+            });
+          if (tableError) {
+            console.log("Something went wrong with the upload, ", tableError);
+          } else {
+            console.log("Images Uploaded successfully");
+          }
+        }
       }
 
       event.target.reset(); // Reset form on success
-      setImages([]);
+      setImageURLs([]);
+      setImageFiles([]);
       alert("Record uploaded successfully!");
     } catch (err) {
       console.error("Submission error:", err);
@@ -138,8 +152,9 @@ function myStore(session) {
       <h1>Aight gang just slide that record in real slow &#129396;</h1>
       <h3>Signed in as {session?.session?.user?.email} </h3>
       <h3>
-        FYI, if you're not Jake you're not gonna be able to do this. Real ones
-        only. Word to your mother.
+        FYI, all these uploads are just gonna go to the bull records store for
+        now. This is a test website. Please don't upload bad photos if you find
+        this haha
       </h3>
       <form onSubmit={handleSubmit}>
         <label htmlFor="images">Images: </label>
@@ -153,7 +168,7 @@ function myStore(session) {
           onChange={previewImages}
         ></input>
         <div>
-          {images.map(
+          {imageURLs.map(
             (
               url,
               index //div where preview of images go when being submitted. An img is generated in order for each item in the images array
