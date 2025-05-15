@@ -122,7 +122,9 @@ function myStore(session) {
             .from("mediaImages")
             .insert({
               mediaID: mediaID,
-              imageURL: `media-images/bull-records/${mediaID}&${i}.jpg`,
+              imageURL: `${
+                import.meta.env.VITE_SUPABASE_URL
+              }/storage/v1/object/public/media-images/bull-records/${mediaID}_${i}.jpg`,
               index: i,
             });
           if (tableError) {
@@ -194,7 +196,7 @@ function myStore(session) {
         ></input>
         <br />
 
-        <label htmlFor="artist">Arist: </label>
+        <label htmlFor="artist">Artist: </label>
         <input
           type="text"
           id="artist"

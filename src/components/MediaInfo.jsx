@@ -1,26 +1,40 @@
-import { useState } from "react";
-import { supabase } from "../supabaseClient";
+import { useState, useEffect } from "react";
 import "../app.css";
+import loadingGif from "../assets/equalizerLoading.gif";
 
-function MediaInfo(media) {
+function MediaInfo({ media }) {
   const [loading, setLoading] = useState(true); //Initializes loading as true
-  const [infoContent, setInfoContent] = useState(null);
+  const [infoContent, setInfoContent] = useState({}); //Initializes infoContent as empty JSON
+
+  const addInfo = (newInfo) => {
+    setInfoContent([...infoContent, newInfo]);
+  };
 
   useEffect(() => {
+    //Takes the info out of the media object and arranges it in html
     async function renderInfo() {
       try {
-        setInfo(document.createElement("div"));
       } catch (error) {
         console.error("Error fetching data:", error);
-        setInfo("Data not found");
       } finally {
         setLoading(false);
       }
     }
-  });
+    renderInfo();
+  }, [media]);
 
   const info = (
-    <div className="media-info" id="mediaInfo">
+    <div className="media-info">
+      <h1>
+        "{media.releaseName}" by {media.artist}
+      </h1>
+      <h2>
+        Price:{" "}
+        {(media.price / 100).toLocaleString("en-US", {
+          style: "currency",
+          currency: "USD",
+        })}
+      </h2>
       {infoContent.length > 0 ? (
         infoContent.map((item) => <div key={item.key}>{item.content}</div>)
       ) : (
@@ -31,7 +45,7 @@ function MediaInfo(media) {
 
   return (
     <div className="pageContent">
-      {loading ? <img src="../assets/equalizerLoading.gif"></img> : { info }};
+      {loading ? <img src={loadingGif} /> : info}
     </div>
   );
 }

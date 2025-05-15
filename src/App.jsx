@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "./supabaseClient";
+import loadingGif from "./assets/equalizerLoading.gif";
 
 function App() {
   const [session, setSession] = useState(null); //Initializes session as null
@@ -35,7 +36,7 @@ function App() {
     //While loading is true, just return this little div here
     return (
       <div className="pageContent">
-        <h1>Loading...</h1>
+        <img src={loadingGif}></img>
       </div>
     );
   }
