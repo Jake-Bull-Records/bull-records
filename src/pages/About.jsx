@@ -10,17 +10,6 @@ function About() {
         entire platform for sales called "CrateDigger"
       </p>
       <p>
-        Full honesty, this is a pretty terrible sampler of what I want it to be.
-        As it turns out this is not only harder than I thought but far more
-        time-consuming than I thought. I've never been great at coding but this
-        project has taken me probably in the realm of 60 hours, as I've had to
-        change so many things I've done and spend so much time debugging as I
-        figure out how to do this. I also over did some parts in place of simply
-        fulfilling the requirements which is probably gonna screw me. For
-        example, actually having secure account creation, authenticated RLS,
-        etc.
-      </p>
-      <p>
         It's also built pretty confusingly. You can literally see the
         progression of my understanding of React and JS as some files are
         completely different in structure from others.
