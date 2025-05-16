@@ -19,6 +19,15 @@
   padding: none;
 }
 
+.mySwiper{
+  width: 1000px;
+}
+
+.mediaDetail{
+  padding: .1rem;
+  font-family: bebas;
+}
+
 .page img {
   border: none;
   margin: none;

@@ -12,6 +12,7 @@ import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "./supabaseClient";
 import loadingGif from "./assets/equalizerLoading.gif";
+import About from "./pages/About.jsx";
 
 function App() {
   const [session, setSession] = useState(null); //Initializes session as null
@@ -45,6 +46,7 @@ function App() {
       <NavBar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/About" element={<About />} />
         <Route path="/crate-digger" element={<CrateDigger />} />
         <Route path="*" element={<PageNotFound />} />
         <Route path="Profile" element={<Profile session={session} />} />

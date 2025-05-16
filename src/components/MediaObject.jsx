@@ -1,7 +1,7 @@
 import { supabase } from "../supabaseClient";
 import "../app.css";
-import MediaInfo from "./MediaInfo.jsx";
 import MediaViewBox from "./MediaViewBox.jsx";
+import MediaInfo from "./mediaInfo.jsx";
 
 function MediaObject({ media }) {
   return (
