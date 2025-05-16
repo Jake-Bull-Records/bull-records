@@ -4,7 +4,7 @@ import MediaObject from "../components/MediaObject.jsx";
 import MediaViewBox from "../components/MediaViewBox.jsx";
 import { supabase } from "../supabaseClient.js";
 import loadingGif from "../assets/equalizerLoading.gif";
-import MediaInfo from "../components/mediaInfo.jsx";
+import MediaInfo from "../components/MediaInfo.jsx";
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
